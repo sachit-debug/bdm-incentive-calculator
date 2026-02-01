@@ -16,8 +16,8 @@ body{
 
 /* HERO */
 .hero{text-align:center;padding:40px 20px 10px;}
-.logo{width:160px;margin-bottom:15px;filter:drop-shadow(0 0 20px rgba(255,255,255,0.5));}
-h1{font-size:42px;font-weight:700;text-transform:uppercase;background:linear-gradient(90deg,#fff,#dbeafe,#fff);-webkit-background-clip:text;color:transparent;}
+.logo{width:150px;margin-bottom:15px;}
+h1{font-size:40px;font-weight:700;text-transform:uppercase;background:linear-gradient(90deg,#fff,#dbeafe,#fff);-webkit-background-clip:text;color:transparent;}
 
 /* LAYOUT */
 .wrapper{max-width:1100px;margin:auto;padding:20px;}
@@ -34,10 +34,7 @@ h1{font-size:42px;font-weight:700;text-transform:uppercase;background:linear-gra
 }
 
 .formGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-input, select{
-  padding:12px;border-radius:14px;border:none;
-  background:rgba(255,255,255,0.9);color:#111;font-weight:600;
-}
+input, select{padding:12px;border-radius:14px;border:none;background:#fff;color:#111;font-weight:600}
 
 /* BUTTON */
 button{
@@ -49,7 +46,7 @@ button{
 @keyframes glow{from{box-shadow:0 0 15px #ffb347;}to{box-shadow:0 0 45px #ff6a00;}}
 
 /* RESULT */
-.resultAmount{font-size:42px;font-weight:700;margin:12px 0}
+.resultAmount{font-size:40px;font-weight:700;margin:12px 0}
 .metric{display:flex;justify-content:space-between;margin:6px 0;font-size:14px}
 .messageTitle{font-size:18px;font-weight:700}
 .messageSub{font-size:16px;font-weight:700;color:#ffe9a8}
@@ -60,8 +57,20 @@ button{
   .grid{grid-template-columns:1fr}
   .formGrid{grid-template-columns:1fr}
   button{grid-column:1/2}
-  h1{font-size:24px}
-  .logo{width:120px}
+  h1{font-size:22px}
+  .logo{width:110px}
+}
+
+/* MONEY */
+.money{
+  position:fixed;
+  width:70px;
+  pointer-events:none;
+  will-change:transform;
+}
+@keyframes fall{
+  0%{transform:translateY(-120px) rotate(0deg);}
+  100%{transform:translateY(110vh) rotate(720deg);}
 }
 </style>
 </head>
@@ -120,28 +129,19 @@ const slabs=[
 ];
 
 function moneyStorm(){
-  let end=Date.now()+2000;
-  let interval=setInterval(()=>{
-    if(Date.now()>end){clearInterval(interval);return;}
-    for(let i=0;i<10;i++){
-      let img=document.createElement("img");
-      img.src="https://upload.wikimedia.org/wikipedia/commons/4/4a/US_one_dollar_bill%2C_obverse.jpg";
-      img.style.position="fixed";
-      img.style.width="100px";
-      img.style.left=Math.random()*100+"vw";
-      img.style.top="-120px";
-      img.style.zIndex="9999";
-      img.style.pointerEvents="none";
-      img.style.animation="fall 1.8s linear forwards";
-      document.body.appendChild(img);
-      setTimeout(()=>img.remove(),2000);
-    }
-  },120);
-}
+  const mobile = window.innerWidth < 900;
+  const count = mobile ? 20 : 45;
 
-const style=document.createElement('style');
-style.innerHTML=`@keyframes fall{0%{transform:translateY(-120px) rotate(0);}100%{transform:translateY(110vh) rotate(720deg);}}`;
-document.head.appendChild(style);
+  for(let i=0;i<count;i++){
+    let img=document.createElement("img");
+    img.src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/US_one_dollar_bill%2C_obverse.jpg/320px-US_one_dollar_bill%2C_obverse.jpg";
+    img.className="money";
+    img.style.left=Math.random()*100+"vw";
+    img.style.animation=`fall ${Math.random()*1.5+1}s linear forwards`;
+    document.body.appendChild(img);
+    setTimeout(()=>img.remove(),2000);
+  }
+}
 
 function playSound(){
   let s=document.getElementById("successSound");
@@ -205,5 +205,6 @@ function calculate(){
 
 </body>
 </html>
+
 
 
